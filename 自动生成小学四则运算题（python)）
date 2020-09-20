@@ -1,0 +1,88 @@
+import profile
+import random
+import math
+from fractions import Fraction
+
+def main():
+    print("请输入整数题目数量:",end='')
+    n1 = int(input())
+    print("请输入真分数题目数量:",end='')
+    n2 = int(input())
+    q = []                              #q列表用来存储题目
+    answer = []                         #answer列表用来存储答案
+    studentanswer = []                  #studentanswer列表用来存储学生的答案
+    i1=0
+    i2=0
+    while i1<n1:
+        intcalculate(q,answer)
+        i1=i1+1
+    while i2<n2:
+        fraction(q,answer)
+        i2=i2+1
+    k1=1
+    k2=1
+    while k1<=len(q):
+        print("第{}题：{}\n".format(k1,q[k1-1]),end='')
+        k1=k1+1
+    #print(q)
+    print("各题答案如下:")
+    print(answer)
+
+
+
+def intcalculate(q,answer):                     #整数的四则运算
+    symbol = random.choice(['+','-','*','/'])   # 生成随机符号
+    n1 = random.randint(0,100)
+    n2 = random.randint(0,100)
+    if symbol == '+':
+        q.append(str(n1)+'+'+str(n2)+'=')
+        answer.append(n1+n2)
+    elif symbol == '-':
+        n1,n2 = max(n1,n2),min(n1,n2)       #防止结果出现负数
+        q.append(str(n1)+'-'+str(n2)+'=')
+        answer.append(n1-n2)                 
+    elif symbol == '*':
+        q.append(str(n1)+'x'+str(n2)+'=')
+        answer.append(n1*n2)
+    else:
+        q.append(str(n1)+'÷'+str(n2)+'=')
+        
+        answer.append(change(Fraction(n1,n2)))   #防止结果除不尽出现小数的情况
+
+
+def fraction(q,answer):                         #真分数的四则运算
+    symbol = random.choice(['+','-','*','/'])
+    f1 = random.randint(0,100)
+    f2 = random.randint(1,100)
+    f3 = random.randint(0,100)
+    f4 = random.randint(1,100)
+    f = Fraction(min(f1,f2),max(f1,f2))
+    ff = Fraction(min(f3,f4),max(f3,f4))
+    
+    if symbol == '+':
+        q.append(str(f)+'+'+str(ff)+'=')
+        answer.append(change(f+ff))
+
+    elif symbol == '-':
+        a1,a2 = max(f,ff),min(f,ff)
+        q.append(str(a1)+'-'+str(a2)+'=')
+        answer.append(change(a1-a2))
+    elif symbol == '*':
+        q.append(str(f)+'x'+str(ff)+'=')
+        answer.append(change(f*ff))
+    else:
+        q.append(str(f)+'÷'+str(ff)+'=')
+        answer.append(change(f/ff))
+
+def change(c):                #分数的转换 函数
+    c1 = c.numerator          #分子   
+    c2 = c.denominator        #分母
+    return str(c1)+'/'+str(c2)
+        
+def fun():                      #效能分析
+    for i in range(100000):
+        a = i*i
+           
+main()
+
+profile.run('fun()')
